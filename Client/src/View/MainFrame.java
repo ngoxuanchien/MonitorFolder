@@ -1,9 +1,5 @@
 package View;
-
 import Controller.ConnectAction;
-import Model.QueueResponse;
-import com.sun.tools.javac.Main;
-
 import javax.swing.*;
 import java.awt.*;
 

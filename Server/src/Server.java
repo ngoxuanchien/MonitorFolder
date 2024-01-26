@@ -1,10 +1,8 @@
 
 import Controller.ClientHandler;
 import Controller.HandleResponse;
-import Controller.RequestClient;
 import Model.QueueResponse;
 import View.ViewFrame;
-
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
@@ -14,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class Main {
+public class Server {
 
     public static void main(String[] args) {
         QueueResponse queueResponse = new QueueResponse();

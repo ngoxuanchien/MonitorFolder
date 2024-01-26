@@ -1,7 +1,5 @@
 package Controller;
-
 import Model.QueueResponse;
-
 import java.io.*;
 import java.net.Socket;
 

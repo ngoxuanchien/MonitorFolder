@@ -1,5 +1,4 @@
 package Model;
-
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
