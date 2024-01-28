@@ -1,5 +1,7 @@
 package View;
 import Controller.ConnectAction;
+import Controller.Strategy.StrategyFactory;
+
 import javax.swing.*;
 import java.awt.*;
 
