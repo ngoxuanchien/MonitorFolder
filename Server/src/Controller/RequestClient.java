@@ -15,6 +15,9 @@ public class RequestClient {
     private static final String ROOT = "ROOT";
     private static final String FOLDER = "FOLDER";
     private static final String REMOVE = "REMOVE";
+    private static final String DELETE = "DELETE";
+    private static final String NEWFOLDER = "NEW FOLDER";
+    private static final String NEWFILE = "NEW FILE";
     private Socket socket;
     private final ObjectOutputStream objectOutputStream;
 
@@ -80,5 +83,25 @@ public class RequestClient {
         objectOutputStream.writeObject(folder);
         objectOutputStream.flush();
 
+    }
+
+    public void deleteFile(CustomFile file) throws IOException {
+        objectOutputStream.writeObject(DELETE);
+        objectOutputStream.writeObject(file);
+        objectOutputStream.flush();
+    }
+
+    public void createNewFolder(CustomFile file, String fileName) throws IOException {
+        objectOutputStream.writeObject(NEWFOLDER);
+        objectOutputStream.writeObject(file);
+        objectOutputStream.writeObject(fileName);
+        objectOutputStream.flush();
+    }
+
+    public void createNewFile(CustomFile file, String fileName) throws IOException {
+        objectOutputStream.writeObject(NEWFILE);
+        objectOutputStream.writeObject(file);
+        objectOutputStream.writeObject(fileName);
+        objectOutputStream.flush();
     }
 }

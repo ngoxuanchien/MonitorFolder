@@ -42,6 +42,48 @@ public class PopupMenuAction implements ActionListener {
                 }
             }
 
+            case "DELETE" -> {
+                Computer computer = viewFrame.getComputerSelected();
+                CustomFile file = viewFrame.getSelectedFolder();
+                int result = viewFrame.showDialog("Do you want to delete " + file.getFile().getName());
+                if (result == JOptionPane.YES_OPTION) {
+                    System.out.println("DELETE " + file.getFile().getName());
+                    try {
+                        RequestClient requestClient = new RequestClient(computer.getSocket());
+                        requestClient.deleteFile(file);
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+
+                }
+            }
+
+            case "NEW FILE" -> {
+                Computer computer = viewFrame.getComputerSelected();
+                CustomFile file = viewFrame.getSelectedFolder();
+                String fileName = viewFrame.requestName("Name the file?");
+                try {
+                    RequestClient requestClient = new RequestClient(computer.getSocket());
+                    requestClient.createNewFile(file, fileName);
+
+//                    requestClient.requestInformation(file.getParentFile());
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+
+            case "NEW FOLDER" -> {
+                Computer computer = viewFrame.getComputerSelected();
+                CustomFile file = viewFrame.getSelectedFolder();
+                String fileName = viewFrame.requestName("Name the folder?");
+                try {
+                    RequestClient requestClient = new RequestClient(computer.getSocket());
+                    requestClient.createNewFolder(file, fileName);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+
             case "MONITOR" -> {
                 Computer computer = viewFrame.getComputerSelected();
                 CustomFile file = viewFrame.getSelectedFolder();
