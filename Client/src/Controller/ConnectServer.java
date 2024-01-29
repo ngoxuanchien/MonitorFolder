@@ -20,6 +20,10 @@ public class ConnectServer {
     private static final String MONITORFOLDER = "MONITORFOLDER";
     private static final String INFORMATION = "INFORMATION";
     private static final String REMOVE = "REMOVE";
+    private static final String DELETE = "DELETE";
+    private static final String NEWFOLDER = "NEW FOLDER";
+    private static final String NEWFILE = "NEW FILE";
+
     private List<MonitorHandler> monitorHandlers;
 
     private final QueueResponse queueResponse = new QueueResponse();
@@ -35,12 +39,29 @@ public class ConnectServer {
         monitorHandlers.add(monitorHandler);
     }
 
+    private static boolean deleteDirectory(File directory) {
+        if (directory.exists()) {
+            File[] files = directory.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    if (file.isDirectory()) {
+                        deleteDirectory(file);
+                    } else {
+                        file.delete();
+                    }
+                }
+            }
+        }
+        return directory.delete();
+    }
+
     public void ResponseServer() throws IOException, ClassNotFoundException {
         new ResponseServer(socket, queueResponse);
         monitorHandlers = new ArrayList<>();
         while (true) {
             ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
             String reader = (String) objectInputStream.readObject();
+            System.out.println(reader);
             switch (reader) {
                 case ROOT -> {
                     List<File> fileList = List.of(File.listRoots());
@@ -165,6 +186,124 @@ public class ConnectServer {
                                     monitorHandler.interrupt();
                                 }
                             }
+                        }
+                    } catch (ClassNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+
+                case DELETE -> {
+                    Object obj;
+                    try {
+                        obj = objectInputStream.readObject();
+
+                        if (obj instanceof CustomFile customFile) {
+                            File file = customFile.getFile().getCanonicalFile();
+                            if (!file.isDirectory()) {
+                                boolean fileDeleted = file.delete();
+
+                                if (fileDeleted) {
+                                    System.out.println("File deleted successfully.");
+                                } else {
+                                    System.out.println("Unable to delete file.");
+                                }
+                            } else {
+                                deleteDirectory(file);
+                            }
+
+                            File parent = file.getParentFile();
+                            if (parent.isDirectory()) {
+                                List<File> fileList = parent.listFiles() == null ? new ArrayList<>()
+                                        : new ArrayList<>(List.of(Objects.requireNonNull(parent.listFiles())));
+                                if (parent.getParentFile() != null) {
+                                    fileList.add(0, new File(file.getPath() + "\\.."));
+                                }
+
+                                List<CustomFile> customFiles = new ArrayList<>();
+                                for (File item : fileList) {
+                                    customFiles.add(new CustomFile(item));
+                                }
+
+                                queueResponse.enqueueData(FOLDER, customFiles);
+                            }
+
+                        }
+                    } catch (ClassNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                case NEWFOLDER -> {
+                    Object obj;
+                    try {
+                        obj = objectInputStream.readObject();
+                        String folderName = (String) objectInputStream.readObject();
+
+                        if (obj instanceof CustomFile customFile) {
+                            File file = customFile.getFile().getCanonicalFile().getParentFile();
+                            File newDirectory = new File(file.getAbsolutePath() + "/" + folderName);
+
+                            boolean directoryCreated = newDirectory.mkdir();
+                            if (directoryCreated) {
+                                System.out.println("Directory created successfully.");
+                            } else {
+                                System.out.println("Directory already exists or creation failed.");
+                            }
+
+//                            File parent = file.getParentFile();
+                            if (file.isDirectory()) {
+                                List<File> fileList = file.listFiles() == null ? new ArrayList<>()
+                                        : new ArrayList<>(List.of(Objects.requireNonNull(file.listFiles())));
+                                if (file.getParentFile() != null) {
+                                    fileList.add(0, new File(file.getPath() + "\\.."));
+                                }
+
+                                List<CustomFile> customFiles = new ArrayList<>();
+                                for (File item : fileList) {
+                                    customFiles.add(new CustomFile(item));
+                                }
+
+                                queueResponse.enqueueData(FOLDER, customFiles);
+                            }
+
+                        }
+                    } catch (ClassNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+
+                case NEWFILE -> {
+                    Object obj;
+                    try {
+                        obj = objectInputStream.readObject();
+                        String folderName = (String) objectInputStream.readObject();
+
+                        if (obj instanceof CustomFile customFile) {
+                            File file = customFile.getFile().getCanonicalFile().getParentFile();
+                            File newFile = new File(file.getAbsolutePath() + "/" + folderName);
+
+                            boolean fileCreated = newFile.createNewFile();
+
+                            if (fileCreated) {
+                                System.out.println("File created successfully.");
+                            } else {
+                                System.out.println("File already exists.");
+                            }
+
+                            if (file.isDirectory()) {
+                                List<File> fileList = file.listFiles() == null ? new ArrayList<>()
+                                        : new ArrayList<>(List.of(Objects.requireNonNull(file.listFiles())));
+                                if (file.getParentFile() != null) {
+                                    fileList.add(0, new File(file.getPath() + "\\.."));
+                                }
+
+                                List<CustomFile> customFiles = new ArrayList<>();
+                                for (File item : fileList) {
+                                    customFiles.add(new CustomFile(item));
+                                }
+
+                                queueResponse.enqueueData(FOLDER, customFiles);
+                            }
+
                         }
                     } catch (ClassNotFoundException e) {
                         throw new RuntimeException(e);

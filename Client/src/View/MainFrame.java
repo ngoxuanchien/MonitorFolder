@@ -18,7 +18,7 @@ public class MainFrame extends JFrame {
         JLabel label = new JLabel("Server: ");
         textField = new JTextField();
         textField.setPreferredSize(new Dimension(200, 25));
-//        textField.setText("192.168.1.5");
+        textField.setText("192.168.1.3");
         JButton button = new JButton("Connect");
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
