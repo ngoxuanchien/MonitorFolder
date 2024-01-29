@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class HandleResponse extends Thread {
     private static final String ROOT = "ROOT";
     private static final String FOLDER = "FOLDER";

@@ -3,11 +3,9 @@ package Controller;
 import Model.Computer;
 import Model.CustomFile;
 import View.ViewFrame;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
 
 public class ComboBoxAction implements ActionListener {
