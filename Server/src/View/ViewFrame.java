@@ -12,6 +12,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +65,25 @@ public class ViewFrame extends JFrame {
         JMenuItem monitor = new JMenuItem("Monitor");
         monitor.setName("MONITOR");
         monitor.addActionListener(new PopupMenuAction(this, monitor));
+
+        JMenuItem deleteItem = new JMenuItem("Delete");
+        deleteItem.setName("DELETE");
+        deleteItem.addActionListener(new PopupMenuAction(this, deleteItem));
+
+        JMenuItem newFileItem = new JMenuItem("New file");
+        newFileItem.setName("NEW FILE");
+        newFileItem.addActionListener(new PopupMenuAction(this, newFileItem));
+
+        JMenuItem newFolderItem = new JMenuItem("New folder");
+        newFolderItem.setName("NEW FOLDER");
+        newFolderItem.addActionListener(new PopupMenuAction(this, newFolderItem));
+
+
+
         folderMenu.add(monitor);
+        folderMenu.add(deleteItem);
+        folderMenu.add(newFileItem);
+        folderMenu.add(newFolderItem);
     }
 
     private JPanel WestPanel() {
@@ -470,6 +489,12 @@ public class ViewFrame extends JFrame {
     public void addAllInformationFolder(List<CustomFile> fileList) {
         informationListModel.removeAllElements();
         informationListModel.addAll(fileList);
+        this.repaint();
+
+        for (CustomFile file : fileList) {
+            System.out.println(file.toString());
+        }
+        System.out.println(1);
 
     }
 
@@ -501,6 +526,11 @@ public class ViewFrame extends JFrame {
         this.repaint();
 
         return JOptionPane.showConfirmDialog(null, message, "Confirm?", JOptionPane.YES_NO_OPTION);
+    }
+
+    public String requestName(String message) {
+        this.repaint();
+        return JOptionPane.showInputDialog(message);
     }
 
     public void removeMonitorFolder(MonitorFolder monitorFolder) {
