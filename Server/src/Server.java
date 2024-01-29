@@ -11,10 +11,12 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import Controller.POPUP.Factory;
 
 public class Server {
 
     public static void main(String[] args) {
+        Factory.FactoryInit();
         QueueResponse queueResponse = new QueueResponse();
         List<ClientHandler> clientHandlerList = new ArrayList<>();
 
