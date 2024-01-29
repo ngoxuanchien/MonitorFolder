@@ -5,7 +5,7 @@ import Model.CustomFile;
 
 public class MonitorStrategy implements IStrategy {
     @Override
-    public void execute(Param param){
+    public void execute(Param param)  throws IOException, ClassNotFoundException{
         Object obj;
         try {
             obj = param.objectInputStream.readObject();

@@ -14,6 +14,9 @@ public class StrategyFactory {
             Factory.put("MONITORFOLDER", new MonitorFolderStrategy());
             Factory.put("INFORMATION", new InformationStrategy());
             Factory.put("REMOVE", new RemoveStrategy());
+            Factory.put("NEW FOLDER", new NewFolderStrategy());
+            Factory.put("NEW FILE", new NewFileStrategy());
+            Factory.put("DELETE", new DeleteStrategy());
         }
 
         public static IStrategy get(String Type)

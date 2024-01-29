@@ -5,15 +5,10 @@ import Model.DefineString;
 import Model.Computer;
 import Model.MonitorFolder;
 import View.ViewFrame;
-
 import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 public class JListAction implements MouseListener {
     private final ViewFrame viewFrame;
